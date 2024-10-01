@@ -2,6 +2,8 @@
 import React from "react";
 import Table from "./Table";
 
+<Form handleSubmit={updateList} />
+
 
 function MyApp(){
   
@@ -14,6 +16,10 @@ function MyApp(){
       removeCharacter={removeOneCharacter}
     />
   </div>
+  }
+
+  function updateList(person) {
+    setCharacters([...characters, person]);
   }
 
   return (
