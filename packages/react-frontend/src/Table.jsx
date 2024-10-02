@@ -12,22 +12,10 @@ function TableHeader() {
   );
 }
 
-function TableBody() {
-  return <tbody />;
-}
-
-function Table(props) {
+function TableBody(props) {
   const rows = props.characterData.map((row, index) => {
     return (
       <tr key={index}>
-        <td>{row.name}</td>
-        <td>{row.job}</td>
-      </tr>
-    );
-   }
-  );
-  return (
-    <tr key={index}>
     <td>{row.name}</td>
     <td>{row.job}</td>
     <td>
@@ -36,6 +24,13 @@ function Table(props) {
       </button>
     </td>
   </tr>
+    );
+   }
+  );
+  return (
+      <tbody>
+        {rows}
+      </tbody>
    );
 }
 
