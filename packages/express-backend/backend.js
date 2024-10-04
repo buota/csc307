@@ -42,6 +42,17 @@ const findUserByName = (name) => {
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
+const addUser = (user) => {
+  users["users_list"].push(user);
+  return user;
+};
+
+const findUserByNameAndJob = (name, job) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name && user["job"] === job
+  );
+};
+
 app.use(express.json());
 
 app.get("/users", (req, res) => {
@@ -53,6 +64,29 @@ app.get("/users", (req, res) => {
   } else {
     res.send(users);
   }
+});
+
+app.get("/users", (req, res) => {
+  const name = req.query.name;
+  const job = req.query.job;
+  
+  if (name && job) {
+    let result = findUserByNameAndJob(name, job);
+    result = { users_list: result };
+    return res.send(result);
+  } else if (name) {
+    let result = findUserByName(name);
+    result = { users_list: result };
+    return res.send(result);
+  } else {
+    return res.send(users);
+  }
+});
+
+app.post("/users", (req, res) => {
+  const userToAdd = req.body;
+  addUser(userToAdd);
+  res.send();
 });
 
 app.get("/users/:id", (req, res) => {
@@ -69,6 +103,17 @@ app.get("/users/:id", (req, res) => {
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"];
+  const userIndex = users["users_list"].findIndex((user) => user["id"] === id);
+  if (userIndex === -1) {
+    return res.status(404).send("User not found.");
+  }
+  users["users_list"].splice(userIndex, 1); // Remove the user from the list
+  res.send("User deleted.");
+});
+
 
 
 app.listen(port, () => {
